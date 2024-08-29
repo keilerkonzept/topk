@@ -1,0 +1,6 @@
+github.com/OneOfOne/xxhash v1.2.8 h1:31czK/TI9sNkxIKfaUfGlU47BAxQ0ztGgd9vPyqimf8=
+github.com/OneOfOne/xxhash v1.2.8/go.mod h1:eZbhyaAYD41SGSSsnmcpxVoRiQ/MPUTjUdIIOT9Um7Q=
+github.com/google/go-cmp v0.6.0 h1:ofyhxvXcZhMsU5ulbFiLKl/XBFqE1GSq7atu8tAmTRI=
+github.com/google/go-cmp v0.6.0/go.mod h1:17dUlkBOakJ0+DkrSSNjCkIjxS6bF9zb3elmeNGIjoY=
+github.com/segmentio/topk v0.1.1 h1:cBhsKta9OOtqELxTmbeopRUcUS8w/JamRtFtKZsY/k8=
+github.com/segmentio/topk v0.1.1/go.mod h1:ngYjeabuYvDMENm7drxGmf8EmD1H9CIckKEIlWNB+MI=
