@@ -1,5 +1,7 @@
 # topk
 
+[![Go Reference](https://pkg.go.dev/badge/github.com/keilerkonzept/topk.svg)](https://pkg.go.dev/github.com/keilerkonzept/topk)
+
 Sliding-window and regular top-K sketches.
 
 - A fast implementation of the HeavyKeeper top-K sketch inspired by the [segmentio implementation](github.com/segmentio/topk) and [RedisBloom implementation](https://github.com/RedisBloom/RedisBloom/blob/b5916e1b9fba17829c3e329c127b99d706eb31f6/src/topk.c).
