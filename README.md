@@ -1,6 +1,7 @@
 # topk
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/keilerkonzept/topk.svg)](https://pkg.go.dev/github.com/keilerkonzept/topk)
+[![Go Report Card](https://goreportcard.com/badge/github.com/keilerkonzept/topk)](https://goreportcard.com/report/github.com/keilerkonzept/topk)
 
 Sliding-window and regular top-K sketches.
 
