@@ -39,8 +39,8 @@ func New(k, windowSize int, opts ...Option) *Sketch {
 	// default settings
 	out := Sketch{
 		K:                   k,
-		Width:               intMax(256, k*log_k),
-		Depth:               intMax(3, log_k),
+		Width:               max(256, k*log_k),
+		Depth:               max(3, log_k),
 		WindowSize:          windowSize,
 		BucketHistoryLength: windowSize,
 		Decay:               0.9,
@@ -135,7 +135,7 @@ func (me *Sketch) Count(item string) uint32 {
 		if b.Fingerprint != fingerprint {
 			continue
 		}
-		maxSum = uint32Max(maxSum, b.CountsSum)
+		maxSum = max(maxSum, b.CountsSum)
 	}
 
 	return maxSum
@@ -161,7 +161,7 @@ func (me *Sketch) recountHeapItems() {
 			if b.Fingerprint != fingerprint {
 				continue
 			}
-			maxSum = uint32Max(maxSum, b.CountsSum)
+			maxSum = max(maxSum, b.CountsSum)
 		}
 		hb.Count = maxSum
 	}
@@ -178,7 +178,7 @@ func (me *Sketch) Incr(item string) bool {
 // Add increments the given item's count by the given increment.
 // Returns whether the item is in the top K.
 func (me *Sketch) Add(item string, increment uint32) bool {
-	var maxCount uint32
+	var maxSum uint32
 	fingerprint := topk.Fingerprint(item)
 
 	width := me.Width
@@ -226,10 +226,10 @@ func (me *Sketch) Add(item string, increment uint32) bool {
 		}
 
 		b.CountsSum = count
-		maxCount = uint32Max(maxCount, count)
+		maxSum = max(maxSum, count)
 	}
 
-	return me.Heap.Update(item, fingerprint, maxCount)
+	return me.Heap.Update(item, fingerprint, maxSum)
 }
 
 // Query returns whether the given item is in the top K items by count.
@@ -282,18 +282,4 @@ func (me *Sketch) Reset() {
 	clear(me.Buckets)
 	clear(me.Heap.Items)
 	clear(me.Heap.Index)
-}
-
-func uint32Max(a, b uint32) uint32 {
-	if a > b {
-		return a
-	}
-	return b
-}
-
-func intMax(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
 }
