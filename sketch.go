@@ -33,10 +33,11 @@ type Sketch struct {
 }
 
 // New returns a sliding top-k sketch with the given `k` (number of top items to keep) and `windowSize` (in ticks).`
-// - The depth defaults to `max(3, log(k))` unless the [WithDepth] option is set.
-// - The width defaults to `max(256, k*log(k))` unless the [WithWidth] option is set.
-// - The decay parameter defaults to 0.9 unless the [WithDecay] option is set.
-// - The decay LUT size defaults to 256 unless the [WithDecayLUTSize] option is set.
+//
+//   - The depth defaults to `max(3, log(k))` unless the [WithDepth] option is set.
+//   - The width defaults to `max(256, k*log(k))` unless the [WithWidth] option is set.
+//   - The decay parameter defaults to 0.9 unless the [WithDecay] option is set.
+//   - The decay LUT size defaults to 256 unless the [WithDecayLUTSize] option is set.
 func New(k int, opts ...Option) *Sketch {
 	log_k := int(math.Ceil(math.Log(float64(k))))
 
