@@ -19,7 +19,7 @@ func WithDecayLUTSize(n int) Option {
 // WithBucketHistoryLength sets the number of old counters to keep per bucket.
 //
 // This parameter primarily affects the precision of the [Sketch.Tick] method:
-//   - The sliding window is accurate (modul counter error) if there as many counters as there are ticks in the window.
+//   - The sliding window is accurate (modulo counter error) if there as many counters as there are ticks in the window.
 //   - If there are fewer old counters, the counts of several ticks are collected in one counter, resulting in imprecise aging.
 func WithBucketHistoryLength(n int) Option {
 	return func(s *Sketch) { s.BucketHistoryLength = n }
