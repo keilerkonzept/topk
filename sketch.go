@@ -10,7 +10,7 @@ import (
 	"github.com/keilerkonzept/topk/internal/sizeof"
 )
 
-// Bucket is a single sketch counter together with the corresponding item's fingerprint.'
+// Bucket is a single sketch counter together with the corresponding item's fingerprint.
 type Bucket struct {
 	Fingerprint uint32
 	Count       uint32

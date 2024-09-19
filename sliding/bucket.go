@@ -1,5 +1,6 @@
 package sliding
 
+// Bucket is a single counter together with its history and the corresponding item's fingerprint.
 type Bucket struct {
 	Fingerprint uint32
 
