@@ -31,7 +31,7 @@ func (me *Bucket) findNonzeroMinimumCount() int {
 	first := true
 	var countsMin uint32
 	i := me.First
-	for range len(me.Counts) {
+	for range me.Counts {
 		if i == uint32(len(me.Counts)) {
 			i = 0
 		}

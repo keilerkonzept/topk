@@ -118,11 +118,103 @@ func main() {
 
 ### Top-K Sketch
 
-(TBD)
+```
+goos: darwin
+goarch: arm64
+pkg: github.com/keilerkonzept/topk
+cpu: Apple M1 Pro
+```
+
+The `Add` benchmark performs random increments in the interval [1,10).
+
+| Operation |   K | Depth | Width |        time |  bytes |      allocs |
+|-----------|----:|------:|------:|------------:|-------:|------------:|
+| `Add`     |  10 |     3 |  1024 | 358.6 ns/op | 0 B/op | 0 allocs/op |
+| `Add`     |  10 |     3 |  8192 | 375.0 ns/op | 0 B/op | 0 allocs/op |
+| `Add`     |  10 |     4 |  1024 | 449.9 ns/op | 0 B/op | 0 allocs/op |
+| `Add`     |  10 |     4 |  8192 | 436.0 ns/op | 0 B/op | 0 allocs/op |
+| `Add`     | 100 |     3 |  1024 | 371.5 ns/op | 0 B/op | 0 allocs/op |
+| `Add`     | 100 |     3 |  8192 | 387.9 ns/op | 0 B/op | 0 allocs/op |
+| `Add`     | 100 |     4 |  1024 | 452.3 ns/op | 0 B/op | 0 allocs/op |
+| `Add`     | 100 |     4 |  8192 | 471.4 ns/op | 0 B/op | 0 allocs/op |
+| `Incr`    |  10 |     3 |  1024 | 257.2 ns/op | 0 B/op | 0 allocs/op |
+| `Incr`    |  10 |     3 |  8192 | 232.3 ns/op | 0 B/op | 0 allocs/op |
+| `Incr`    |  10 |     4 |  1024 | 249.1 ns/op | 0 B/op | 0 allocs/op |
+| `Incr`    |  10 |     4 |  8192 | 251.2 ns/op | 0 B/op | 0 allocs/op |
+| `Incr`    | 100 |     3 |  1024 | 264.2 ns/op | 0 B/op | 0 allocs/op |
+| `Incr`    | 100 |     3 |  8192 | 227.4 ns/op | 0 B/op | 0 allocs/op |
+| `Incr`    | 100 |     4 |  1024 | 267.1 ns/op | 0 B/op | 0 allocs/op |
+| `Incr`    | 100 |     4 |  8192 | 261.3 ns/op | 0 B/op | 0 allocs/op |
+| `Count`   |  10 |     3 |  1024 | 216.0 ns/op | 0 B/op | 0 allocs/op |
+| `Count`   |  10 |     3 |  8192 | 215.4 ns/op | 0 B/op | 0 allocs/op |
+| `Count`   |  10 |     4 |  1024 | 220.0 ns/op | 0 B/op | 0 allocs/op |
+| `Count`   |  10 |     4 |  8192 | 269.3 ns/op | 0 B/op | 0 allocs/op |
+| `Count`   | 100 |     3 |  1024 | 235.1 ns/op | 0 B/op | 0 allocs/op |
+| `Count`   | 100 |     3 |  8192 | 277.1 ns/op | 0 B/op | 0 allocs/op |
+| `Count`   | 100 |     4 |  1024 | 278.7 ns/op | 0 B/op | 0 allocs/op |
+| `Count`   | 100 |     4 |  8192 | 302.2 ns/op | 0 B/op | 0 allocs/op |
+| `Query`   |  10 |     3 |  1024 | 129.6 ns/op | 0 B/op | 0 allocs/op |
+| `Query`   |  10 |     3 |  8192 | 98.21 ns/op | 0 B/op | 0 allocs/op |
+| `Query`   |  10 |     4 |  1024 | 129.9 ns/op | 0 B/op | 0 allocs/op |
+| `Query`   |  10 |     4 |  8192 | 114.3 ns/op | 0 B/op | 0 allocs/op |
+| `Query`   | 100 |     3 |  1024 | 141.2 ns/op | 0 B/op | 0 allocs/op |
+| `Query`   | 100 |     3 |  8192 | 140.8 ns/op | 0 B/op | 0 allocs/op |
+| `Query`   | 100 |     4 |  1024 | 131.1 ns/op | 0 B/op | 0 allocs/op |
+| `Query`   | 100 |     4 |  8192 | 109.8 ns/op | 0 B/op | 0 allocs/op |
 
 ### Sliding-Window Top-K Sketch
 
-(TBD)
+```
+goos: darwin
+goarch: arm64
+pkg: github.com/keilerkonzept/topk/sliding
+cpu: Apple M1 Pro
+```
+
+The `Add` benchmark performs random increments in the interval [1,10).
+
+| Operation |   K | Depth | Width | Window size | History size |        time |  bytes |      allocs |
+|-----------|----:|------:|------:|------------:|-------------:|------------:|-------:|------------:|
+| `Add`     |  10 |     3 |  1024 |         100 |           50 | 696.9 ns/op | 0 B/op | 0 allocs/op |
+| `Add`     |  10 |     3 |  1024 |         100 |          100 |  1051 ns/op | 0 B/op | 0 allocs/op |
+| `Add`     |  10 |     3 |  8192 |         100 |           50 | 784.9 ns/op | 0 B/op | 0 allocs/op |
+| `Add`     |  10 |     3 |  8192 |         100 |          100 |  1146 ns/op | 0 B/op | 0 allocs/op |
+| `Add`     | 100 |     3 |  1024 |         100 |           50 | 712.9 ns/op | 0 B/op | 0 allocs/op |
+| `Add`     | 100 |     3 |  1024 |         100 |          100 |  1054 ns/op | 0 B/op | 0 allocs/op |
+| `Add`     | 100 |     3 |  8192 |         100 |           50 | 763.3 ns/op | 0 B/op | 0 allocs/op |
+| `Add`     | 100 |     3 |  8192 |         100 |          100 |  1139 ns/op | 0 B/op | 0 allocs/op |
+| `Incr`    |  10 |     3 |  1024 |         100 |           50 | 434.9 ns/op | 0 B/op | 0 allocs/op |
+| `Incr`    |  10 |     3 |  1024 |         100 |          100 | 560.7 ns/op | 0 B/op | 0 allocs/op |
+| `Incr`    |  10 |     3 |  8192 |         100 |           50 | 501.1 ns/op | 0 B/op | 0 allocs/op |
+| `Incr`    |  10 |     3 |  8192 |         100 |          100 | 728.7 ns/op | 0 B/op | 0 allocs/op |
+| `Incr`    | 100 |     3 |  1024 |         100 |           50 | 425.6 ns/op | 0 B/op | 0 allocs/op |
+| `Incr`    | 100 |     3 |  1024 |         100 |          100 | 580.0 ns/op | 0 B/op | 0 allocs/op |
+| `Incr`    | 100 |     3 |  8192 |         100 |           50 | 497.8 ns/op | 0 B/op | 0 allocs/op |
+| `Incr`    | 100 |     3 |  8192 |         100 |          100 | 746.2 ns/op | 0 B/op | 0 allocs/op |
+| `Count`   |  10 |     3 |  1024 |         100 |           50 | 228.5 ns/op | 0 B/op | 0 allocs/op |
+| `Count`   |  10 |     3 |  1024 |         100 |          100 | 209.3 ns/op | 0 B/op | 0 allocs/op |
+| `Count`   |  10 |     3 |  8192 |         100 |           50 | 234.5 ns/op | 0 B/op | 0 allocs/op |
+| `Count`   |  10 |     3 |  8192 |         100 |          100 | 230.7 ns/op | 0 B/op | 0 allocs/op |
+| `Count`   | 100 |     3 |  1024 |         100 |           50 | 237.5 ns/op | 0 B/op | 0 allocs/op |
+| `Count`   | 100 |     3 |  1024 |         100 |          100 | 242.8 ns/op | 0 B/op | 0 allocs/op |
+| `Count`   | 100 |     3 |  8192 |         100 |           50 | 246.5 ns/op | 0 B/op | 0 allocs/op |
+| `Count`   | 100 |     3 |  8192 |         100 |          100 | 243.4 ns/op | 0 B/op | 0 allocs/op |
+| `Query`   |  10 |     3 |  1024 |         100 |           50 | 101.7 ns/op | 0 B/op | 0 allocs/op |
+| `Query`   |  10 |     3 |  1024 |         100 |          100 | 104.8 ns/op | 0 B/op | 0 allocs/op |
+| `Query`   |  10 |     3 |  8192 |         100 |           50 | 114.0 ns/op | 0 B/op | 0 allocs/op |
+| `Query`   |  10 |     3 |  8192 |         100 |          100 | 114.5 ns/op | 0 B/op | 0 allocs/op |
+| `Query`   | 100 |     3 |  1024 |         100 |           50 | 135.9 ns/op | 0 B/op | 0 allocs/op |
+| `Query`   | 100 |     3 |  1024 |         100 |          100 | 118.5 ns/op | 0 B/op | 0 allocs/op |
+| `Query`   | 100 |     3 |  8192 |         100 |           50 | 130.1 ns/op | 0 B/op | 0 allocs/op |
+| `Query`   | 100 |     3 |  8192 |         100 |          100 | 131.5 ns/op | 0 B/op | 0 allocs/op |
+| `Tick`    |  10 |     3 |  1024 |         100 |           50 |  4191 ns/op | 0 B/op | 0 allocs/op |
+| `Tick`    |  10 |     3 |  1024 |         100 |          100 |  7010 ns/op | 0 B/op | 0 allocs/op |
+| `Tick`    |  10 |     3 |  8192 |         100 |           50 | 28699 ns/op | 0 B/op | 0 allocs/op |
+| `Tick`    |  10 |     3 |  8192 |         100 |          100 | 90979 ns/op | 0 B/op | 0 allocs/op |
+| `Tick`    | 100 |     3 |  1024 |         100 |           50 |  6539 ns/op | 0 B/op | 0 allocs/op |
+| `Tick`    | 100 |     3 |  1024 |         100 |          100 |  9343 ns/op | 0 B/op | 0 allocs/op |
+| `Tick`    | 100 |     3 |  8192 |         100 |           50 | 31349 ns/op | 0 B/op | 0 allocs/op |
+| `Tick`    | 100 |     3 |  8192 |         100 |          100 | 87488 ns/op | 0 B/op | 0 allocs/op |
 
 ### Decay LUT impact
 

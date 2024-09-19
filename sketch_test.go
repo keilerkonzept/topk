@@ -228,9 +228,6 @@ func TestSketchErrorBounds(t *testing.T) {
 	for _, tc := range testCases {
 		actualCount := sketch.Count(tc.item)
 
-		// prob = 1/(epsilon*width*count*(1-b))
-		// (epsilon*width*count*(1-b))*prob = 1
-		// epsilon = 1/(width*count*(1-b))*prob)
 		epsilon := 1 / (approxErrorProbability * (float64(width*depth) * float64(tc.count) * float64(1-decay)))
 
 		lowerBound := float64(tc.count) - math.Ceil(epsilon*float64(totalItems-int(tc.count)))
