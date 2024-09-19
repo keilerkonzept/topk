@@ -22,7 +22,7 @@ type Min struct {
 func NewMin(k int) *Min {
 	return &Min{
 		K:     k,
-		Items: make([]Item, k),
+		Items: make([]Item, 0, k),
 		Index: make(map[string]int, k),
 	}
 }
@@ -31,7 +31,7 @@ var _ heap.Interface = &Min{}
 
 func (me Min) SizeBytes() int {
 	structSize := sizeofMinStruct
-	bucketsSize := len(me.Items)*sizeofItem + me.StoredKeysBytes
+	bucketsSize := cap(me.Items)*sizeofItem + me.StoredKeysBytes
 	indexSize := sizeof.StringIntMap + (sizeof.Int+sizeof.String)*len(me.Index)
 	return structSize + bucketsSize + indexSize
 }
@@ -127,7 +127,7 @@ func (me *Min) Update(item string, fingerprint uint32, count uint32) bool {
 	me.StoredKeysBytes += len(item)
 
 	if !me.Full() { // heap not full: add to heap
-		me.Push(Item{
+		heap.Push(me, Item{
 			Count:       count,
 			Fingerprint: fingerprint,
 			Item:        item,
