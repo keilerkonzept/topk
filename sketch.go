@@ -10,11 +10,14 @@ import (
 	"github.com/keilerkonzept/topk/internal/sizeof"
 )
 
+// Bucket is a single sketch counter together with the corresponding item's fingerprint.'
 type Bucket struct {
 	Fingerprint uint32
 	Count       uint32
 }
 
+// Sketch is a top-k sketch.
+// The entire structure is serializable using any serialization method - all fields and sub-structs are exported and can be reasonably serialized.
 type Sketch struct {
 	K     int // Keep track of top `K` items in the min-heap..
 	Width int // Number of buckets per hash function.
@@ -29,6 +32,11 @@ type Sketch struct {
 	Heap    *heap.Min // Top-K min-heap.
 }
 
+// New returns a sliding top-k sketch with the given `k` (number of top items to keep) and `windowSize` (in ticks).`
+// - The depth defaults to `max(3, log(k))` unless the [WithDepth] option is set.
+// - The width defaults to `max(256, k*log(k))` unless the [WithWidth] option is set.
+// - The decay parameter defaults to 0.9 unless the [WithDecay] option is set.
+// - The decay LUT size defaults to 256 unless the [WithDecayLUTSize] option is set.
 func New(k int, opts ...Option) *Sketch {
 	log_k := int(math.Ceil(math.Log(float64(k))))
 
