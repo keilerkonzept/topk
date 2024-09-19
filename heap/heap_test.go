@@ -5,14 +5,13 @@ import (
 	"unsafe"
 
 	"github.com/keilerkonzept/topk/heap"
-	sketchheap "github.com/keilerkonzept/topk/heap"
 	"github.com/keilerkonzept/topk/internal/sizeof"
 )
 
 func TestMinHeap_LessSwap(t *testing.T) {
-	h := sketchheap.NewMin(5)
+	h := heap.NewMin(5)
 
-	h.Items = []sketchheap.Item{
+	h.Items = []heap.Item{
 		{Item: "a", Count: 5, Fingerprint: 1},
 		{Item: "b", Count: 2, Fingerprint: 2},
 		{Item: "c", Count: 3, Fingerprint: 3},
@@ -34,7 +33,7 @@ func TestMinHeap_LessSwap(t *testing.T) {
 }
 
 func TestMinHeap_Full(t *testing.T) {
-	h := sketchheap.NewMin(2)
+	h := heap.NewMin(2)
 
 	h.Update("a", 1, 2)
 	if h.Full() {
@@ -48,7 +47,7 @@ func TestMinHeap_Full(t *testing.T) {
 }
 
 func TestMinHeap_Update(t *testing.T) {
-	h := sketchheap.NewMin(2)
+	h := heap.NewMin(2)
 
 	// Insert new item
 	h.Update("a", 1, 10)
@@ -65,7 +64,7 @@ func TestMinHeap_Update(t *testing.T) {
 	if h.Contains("b") {
 		t.Errorf("expected 'b' to be removed from the heap")
 	}
-	// "d" should be not enter the heap as its below the Min()
+	// "d" should not enter the heap as its count is less than Min()
 	if h.Contains("d") {
 		t.Errorf("expected 'd' to never enter the heap")
 	}
@@ -78,7 +77,7 @@ func TestMinHeap_Update(t *testing.T) {
 }
 
 func TestMinHeap_Min(t *testing.T) {
-	h := sketchheap.NewMin(2)
+	h := heap.NewMin(2)
 
 	// Empty heap
 	if h.Min() != 0 {
@@ -96,11 +95,11 @@ func TestMinHeap_Min(t *testing.T) {
 }
 
 func TestMinHeap_Reinit(t *testing.T) {
-	h := sketchheap.NewMin(3)
+	h := heap.NewMin(3)
 
-	h.Push(sketchheap.Item{Item: "a", Count: 0, Fingerprint: 1})
-	h.Push(sketchheap.Item{Item: "b", Count: 2, Fingerprint: 2})
-	h.Push(sketchheap.Item{Item: "c", Count: 3, Fingerprint: 3})
+	h.Push(heap.Item{Item: "a", Count: 0, Fingerprint: 1})
+	h.Push(heap.Item{Item: "b", Count: 2, Fingerprint: 2})
+	h.Push(heap.Item{Item: "c", Count: 3, Fingerprint: 3})
 
 	// Reinit should remove items with 0 count
 	h.Reinit()
@@ -113,7 +112,7 @@ func TestMinHeap_Reinit(t *testing.T) {
 }
 
 func TestMinHeap_Find(t *testing.T) {
-	h := sketchheap.NewMin(3)
+	h := heap.NewMin(3)
 	h.Update("a", 1, 10)
 
 	// Find existing item
@@ -130,7 +129,7 @@ func TestMinHeap_Find(t *testing.T) {
 }
 
 func TestMinHeap_Get(t *testing.T) {
-	h := sketchheap.NewMin(3)
+	h := heap.NewMin(3)
 	h.Update("a", 1, 10)
 
 	// Get existing item
@@ -150,8 +149,8 @@ func TestMinHeap_SizeBytes(t *testing.T) {
 	h := heap.NewMin(3)
 
 	const (
-		sizeofMinStruct = int(unsafe.Sizeof(sketchheap.Min{}))
-		sizeofItem      = int(unsafe.Sizeof(sketchheap.Item{}))
+		sizeofMinStruct = int(unsafe.Sizeof(heap.Min{}))
+		sizeofItem      = int(unsafe.Sizeof(heap.Item{}))
 	)
 
 	// Initial size should only account for the struct and empty containers
