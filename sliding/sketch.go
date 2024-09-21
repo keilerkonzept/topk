@@ -228,6 +228,7 @@ func (me *Sketch) Add(item string, increment uint32) bool {
 					if count == 0 {
 						b.Fingerprint = fingerprint
 						count = incrementRemaining
+						b.Counts[0] = incrementRemaining
 						break
 					}
 				}
