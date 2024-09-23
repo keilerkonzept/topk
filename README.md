@@ -16,6 +16,11 @@ import (
 )
 ```
 
+[Demo application: `github.com/keilerkonzept/sliding-topk-tui-demo`](https://github.com/keilerkonzept/sliding-topk-tui-demo)
+<p>
+    <img src="https://www.keilerkonzept.com/sliding-topk-demo.gif" width="100%" alt="Sliding Top-K Demo Application">
+</p>
+
 ## Contents
 
 - [Examples](#examples)
