@@ -1,5 +1,5 @@
 # topk
-![Coverage](https://img.shields.io/badge/Coverage-97.7%25-brightgreen)
+[![Coverage](https://img.shields.io/badge/Coverage-97.7%25-brightgreen)](https://github.com/keilerkonzept/topk/actions/workflows/gocover.yaml)
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/keilerkonzept/topk.svg)](https://pkg.go.dev/github.com/keilerkonzept/topk)
 [![Go Report Card](https://goreportcard.com/badge/github.com/keilerkonzept/topk)](https://goreportcard.com/report/github.com/keilerkonzept/topk)
