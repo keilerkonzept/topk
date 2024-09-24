@@ -16,7 +16,7 @@ import (
 )
 ```
 
-[Demo application](https://github.com/keilerkonzept/sliding-topk-tui-demo): top K requesting IPs within a 4h sliding window from a [web server access logs dataset](https://www.kaggle.com/datasets/eliasdabbas/web-server-access-logs)
+[Demo application](https://github.com/keilerkonzept/sliding-topk-tui-demo): top K requesting IPs within a sliding time window from a [web server access logs dataset](https://www.kaggle.com/datasets/eliasdabbas/web-server-access-logs)
 <p>
     <img src="https://www.keilerkonzept.com/sliding-topk-demo.gif" width="100%" alt="Sliding Top-K Demo Application">
 </p>
