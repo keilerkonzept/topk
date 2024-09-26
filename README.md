@@ -226,7 +226,7 @@ The `Add` benchmark performs random increments in the interval [1,10).
 Using [benchstat](https://pkg.go.dev/golang.org/x/perf/cmd/benchstat):
 ```sh
 $ go test -run='^$' -bench=BenchmarkSketchAddForComparison -count=10 | tee new.txt
-$ go test -run='^$' -bench=BenchmarkSegmentioTopkSample -count=10 | tee -a old.txt
+$ go test -run='^$' -bench=BenchmarkSegmentioTopkSample -count=10 | tee old.txt
 $ benchstat -row /K,/Depth,/Width,/Decay -col .name old.txt new.txt
 ```
 
