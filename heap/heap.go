@@ -1,3 +1,4 @@
+// Package heap implements a min-heap that keeps track of the top-K items in a sketch.
 package heap
 
 import (
