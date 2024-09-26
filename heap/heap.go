@@ -167,3 +167,11 @@ func (me *Min) Update(item string, fingerprint uint32, count uint32) bool {
 	heap.Fix(me, 0)
 	return true
 }
+
+// Reset resets the heap.
+func (me *Min) Reset() {
+	clear(me.Items)
+	clear(me.Index)
+	me.StoredKeysBytes = 0
+	me.Items = me.Items[:0]
+}

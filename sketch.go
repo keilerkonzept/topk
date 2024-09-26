@@ -210,6 +210,5 @@ func (me *Sketch) SortedSlice() []heap.Item {
 // Reset resets the sketch to an empty state.
 func (me *Sketch) Reset() {
 	clear(me.Buckets)
-	clear(me.Heap.Items)
-	clear(me.Heap.Index)
+	me.Heap.Reset()
 }

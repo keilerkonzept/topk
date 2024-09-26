@@ -290,6 +290,5 @@ func (me *Sketch) Reset() {
 		clear(me.Buckets[i].Counts)
 	}
 	clear(me.Buckets)
-	clear(me.Heap.Items)
-	clear(me.Heap.Index)
+	me.Heap.Reset()
 }
