@@ -39,12 +39,13 @@ type Sketch struct {
 //   - The decay parameter defaults to 0.9 unless the [WithDecay] option is set.
 //   - The decay LUT size defaults to 256 unless the [WithDecayLUTSize] option is set.
 func New(k int, opts ...Option) *Sketch {
-	log_k := int(math.Ceil(math.Log(float64(k))))
+	log_k := int(math.Log(float64(k)))
+	k_log_k := int(float64(k) * math.Log(float64(k)))
 
 	// default settings
 	out := Sketch{
 		K:     k,
-		Width: max(256, k*log_k),
+		Width: max(256, k_log_k),
 		Depth: max(3, log_k),
 		Decay: 0.9,
 	}
