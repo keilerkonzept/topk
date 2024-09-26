@@ -6,12 +6,15 @@ import (
 	"github.com/keilerkonzept/topk/internal/sizeof"
 )
 
+// Item is an entry in the Min-heap with a fingerprint, the item string, and its count.
 type Item struct {
 	Fingerprint uint32
 	Item        string
 	Count       uint32
 }
 
+// Min is a min-heap that keeps track of the top-K items.
+// It holds a slice of Items, an index map for O(1) lookup, and the total number of stored bytes for the keys.
 type Min struct {
 	K               int
 	Items           []Item
@@ -19,6 +22,7 @@ type Min struct {
 	StoredKeysBytes int
 }
 
+// NewMin creates and returns a new Min-heap with a capacity of up to k items.
 func NewMin(k int) *Min {
 	return &Min{
 		K:     k,
@@ -27,8 +31,11 @@ func NewMin(k int) *Min {
 	}
 }
 
+// Ensure Min implements the heap.Interface.
 var _ heap.Interface = &Min{}
 
+// SizeBytes calculates the total memory usage of the Min heap in bytes.
+// This includes the size of the struct, the Items slice, and the index map.
 func (me Min) SizeBytes() int {
 	structSize := sizeofMinStruct
 	bucketsSize := cap(me.Items)*sizeofItem + me.StoredKeysBytes
@@ -36,6 +43,7 @@ func (me Min) SizeBytes() int {
 	return structSize + bucketsSize + indexSize
 }
 
+// Reinit reinitializes the Min heap, removing all items with a zero count.
 func (me *Min) Reinit() {
 	heap.Init(me)
 	for me.Len() > 0 && me.Items[0].Count == 0 {
@@ -45,12 +53,14 @@ func (me *Min) Reinit() {
 	}
 }
 
+// Full checks if the Min heap is full.
 func (me Min) Full() bool { return len(me.Items) == me.K }
 
-// Len is container/heap.Interface.Len().
+// Len returns the number of items currently in the heap. It implements the [heap.Interface].
 func (me Min) Len() int { return len(me.Items) }
 
-// Less is container/heap.Interface.Less().
+// Less compares two items in the heap based on their counts (or lexicographically if counts are equal).
+// It is used to maintain heap order and implements the [heap.Interface].
 func (me Min) Less(i, j int) bool {
 	ic := me.Items[i].Count
 	jc := me.Items[j].Count
@@ -60,7 +70,8 @@ func (me Min) Less(i, j int) bool {
 	return ic < jc
 }
 
-// Swap is container/heap.Interface.Swap().
+// Swap exchanges two items in the heap and updates their indices in the index map.
+// It implements the [heap.Interface].
 func (me Min) Swap(i, j int) {
 	itemi := me.Items[i].Item
 	itemj := me.Items[j].Item
@@ -69,14 +80,14 @@ func (me Min) Swap(i, j int) {
 	me.Index[itemj] = i
 }
 
-// Push is container/heap.Interface.Push().
+// Push adds a new item to the heap. It implements the [heap.Interface].
 func (me *Min) Push(x interface{}) {
 	b := x.(Item)
 	me.Items = append(me.Items, b)
 	me.Index[b.Item] = len(me.Items) - 1
 }
 
-// Pop is container/heap.Interface.Pop().
+// Pop removes and returns the minimum item from the heap. It implements the [heap.Interface].
 func (me *Min) Pop() interface{} {
 	old := me.Items
 	n := len(old)
@@ -94,6 +105,8 @@ func (me Min) Min() uint32 {
 	return me.Items[0].Count
 }
 
+// Find searches for an item by its string value and returns its index in the heap.
+// If the item is not found, it returns -1.
 func (me Min) Find(item string) (i int) {
 	if i, ok := me.Index[item]; ok {
 		return i
@@ -101,11 +114,14 @@ func (me Min) Find(item string) (i int) {
 	return -1
 }
 
+// Contains checks if a given item exists in the heap.
 func (me Min) Contains(item string) bool {
 	_, ok := me.Index[item]
 	return ok
 }
 
+// Get returns a pointer to the Item corresponding to the given item string.
+// If the item is not found, it returns nil.
 func (me Min) Get(item string) *Item {
 	if i, ok := me.Index[item]; ok {
 		return &me.Items[i]
@@ -113,6 +129,9 @@ func (me Min) Get(item string) *Item {
 	return nil
 }
 
+// Update inserts or updates an item in the heap.
+// If the count is smaller than the current minimum count and the heap is full, the update is ignored.
+// Otherwise, the item is added or updated in the heap.
 func (me *Min) Update(item string, fingerprint uint32, count uint32) bool {
 	if count < me.Min() && me.Full() { // not in top k: ignore
 		return false
