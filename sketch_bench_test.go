@@ -117,7 +117,7 @@ func BenchmarkSketchQuery(b *testing.B) {
 
 // BenchmarkSegmentioTopkSample benchmarks the Sample method of a [github.com/segmentio/topk.HeavyKeeper].
 func BenchmarkSegmentioTopkSample(b *testing.B) {
-	for _, k := range []int{100, 1_000, 10_000, 100_000} {
+	for _, k := range []int{10} {
 		for _, decay := range []float64{0.6, 0.8, 0.9} {
 			depth := max(3, int(math.Log(float64(k))))
 			width := max(256, int(float64(k)*math.Log(float64(k))))
@@ -135,7 +135,7 @@ func BenchmarkSegmentioTopkSample(b *testing.B) {
 
 // BenchmarkSketchAddForComparison benchmarks the Add method of a [topk.Sketch] for comparison with the segmentio implementation.
 func BenchmarkSketchAddForComparison(b *testing.B) {
-	for _, k := range []int{100, 1_000, 10_000, 100_000} {
+	for _, k := range []int{10} {
 		for _, decay := range []float32{0.6, 0.8, 0.9} {
 			depth := max(3, int(math.Log(float64(k))))
 			width := max(256, int(float64(k)*math.Log(float64(k))))
