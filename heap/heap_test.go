@@ -177,3 +177,47 @@ func TestMinHeap_SizeBytes(t *testing.T) {
 		t.Errorf("expected SizeBytes to be %d, got %d", expectedSize, h.SizeBytes())
 	}
 }
+
+func TestMin_Reset(t *testing.T) {
+	// Create a new Min heap with capacity 3
+	minHeap := heap.NewMin(3)
+
+	// Add some items to the heap
+	minHeap.Update("item1", 12345, 10)
+	minHeap.Update("item2", 12346, 20)
+	minHeap.Update("item3", 12347, 5)
+
+	// Verify that the heap contains 3 items
+	if len(minHeap.Items) != 3 {
+		t.Fatalf("expected heap length 3, got %d", len(minHeap.Items))
+	}
+
+	// Verify that the index map contains 3 items
+	if len(minHeap.Index) != 3 {
+		t.Fatalf("expected index length 3, got %d", len(minHeap.Index))
+	}
+
+	// Verify StoredKeysBytes is updated correctly
+	expectedBytes := len("item1") + len("item2") + len("item3")
+	if minHeap.StoredKeysBytes != expectedBytes {
+		t.Fatalf("expected StoredKeysBytes %d, got %d", expectedBytes, minHeap.StoredKeysBytes)
+	}
+
+	// Call Reset on the heap
+	minHeap.Reset()
+
+	// Verify that the heap is empty
+	if len(minHeap.Items) != 0 {
+		t.Fatalf("expected heap length 0 after reset, got %d", len(minHeap.Items))
+	}
+
+	// Verify that the index map is empty
+	if len(minHeap.Index) != 0 {
+		t.Fatalf("expected index length 0 after reset, got %d", len(minHeap.Index))
+	}
+
+	// Verify StoredKeysBytes is reset to 0
+	if minHeap.StoredKeysBytes != 0 {
+		t.Fatalf("expected StoredKeysBytes 0 after reset, got %d", minHeap.StoredKeysBytes)
+	}
+}
