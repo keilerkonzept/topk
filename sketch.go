@@ -130,14 +130,14 @@ func (me *Sketch) Add(item string, increment uint32) bool {
 		// empty bucket (zero count)
 		case count == 0:
 			b.Fingerprint = fingerprint
-			b.Count = increment
 			count = increment
-
+			b.Count = count
+			maxCount = max(maxCount, count)
 		// this flow's bucket (equal fingerprint)
 		case b.Fingerprint == fingerprint:
-			b.Count = increment
 			count += increment
-
+			b.Count = count
+			maxCount = max(maxCount, count)
 		// another flow's bucket (nonequal fingerprint)
 		default:
 			// can't be inlined, so not factored out
@@ -147,23 +147,24 @@ func (me *Sketch) Add(item string, increment uint32) bool {
 				if count < lookupTableSize {
 					decay = me.DecayLUT[count]
 				} else {
-					decay = float32(math.Pow(
-						float64(me.DecayLUT[lookupTableSize-1]),
-						float64(count/(lookupTableSize-1)))) * me.DecayLUT[count%(lookupTableSize-1)]
+					decay =
+						float32(math.Pow(
+							float64(me.DecayLUT[lookupTableSize-1]),
+							float64(count/(lookupTableSize-1)))) * me.DecayLUT[count%(lookupTableSize-1)]
 				}
 				if rand.Float32() < decay {
 					count--
 					if count == 0 {
 						b.Fingerprint = fingerprint
 						count = incrementRemaining
+						b.Count = count
+						maxCount = max(maxCount, count)
 						break
 					}
 				}
 			}
 		}
 
-		b.Count = count
-		maxCount = max(maxCount, count)
 	}
 
 	return me.Heap.Update(item, fingerprint, maxCount)
