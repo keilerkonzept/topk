@@ -4,10 +4,10 @@
 [![Go Reference](https://pkg.go.dev/badge/github.com/keilerkonzept/topk.svg)](https://pkg.go.dev/github.com/keilerkonzept/topk)
 [![Go Report Card](https://goreportcard.com/badge/github.com/keilerkonzept/topk)](https://goreportcard.com/report/github.com/keilerkonzept/topk)
 
-Sliding-window and regular top-K sketches. [Significantly faster (~1.5x)](#comparison-with-segmentiotopk) than [segmentio/topk](https://github.com/segmentio/topk) on small sketches (k <= 1000) and [much faster (10x-90x)](#comparison-with-segmentiotopk) on large sketches (k >= 10000).
+Sliding-window and regular top-K sketches.
 
-- A fast implementation of the [HeavyKeeper top-K sketch](https://www.usenix.org/conference/atc18/presentation/gong) inspired by the [segmentio implementation](https://github.com/segmentio/topk) and [RedisBloom implementation](https://github.com/RedisBloom/RedisBloom/blob/b5916e1b9fba17829c3e329c127b99d706eb31f6/src/topk.c).
-- A sliding-window top-K sketch, also based on HeavyKeeper, as described in ["A Sketch Framework for Approximate Data Stream Processing in Sliding Windows"](https://yangtonghome.github.io/uploads/SlidingSketch_TKDE2022_final.pdf)
+- A fast implementation of the [**HeavyKeeper top-K sketch**](https://www.usenix.org/conference/atc18/presentation/gong) inspired by the [segmentio implementation](https://github.com/segmentio/topk) and [RedisBloom implementation](https://github.com/RedisBloom/RedisBloom/blob/b5916e1b9fba17829c3e329c127b99d706eb31f6/src/topk.c). [Significantly faster (~1.5x)](#comparison-with-segmentiotopk) than [segmentio/topk](https://github.com/segmentio/topk) on small sketches (k <= 1000) and [much faster (10x-90x)](#comparison-with-segmentiotopk) on large sketches (k >= 10000).
+- A **sliding-window top-K sketch**, also based on HeavyKeeper, as described in ["A Sketch Framework for Approximate Data Stream Processing in Sliding Windows"](https://yangtonghome.github.io/uploads/SlidingSketch_TKDE2022_final.pdf)
 
 ```go
 import (
