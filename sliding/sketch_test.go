@@ -36,6 +36,25 @@ func TestNewSketch_DefaultParameters(t *testing.T) {
 	}
 }
 
+func TestNewSketch_DefaultParametersClamp(t *testing.T) {
+	k := 10
+	{
+		sketch := sliding.New(k, 1, sliding.WithBucketHistoryLength(0), sliding.WithDecayLUTSize(0))
+		if sketch.BucketHistoryLength != 1 {
+			t.Fail()
+		}
+		if len(sketch.DecayLUT) == 0 {
+			t.Fail()
+		}
+	}
+	{
+		sketch := sliding.New(k, 1, sliding.WithBucketHistoryLength(2))
+		if sketch.BucketHistoryLength != 1 {
+			t.Fail()
+		}
+	}
+}
+
 func TestSketch_SizeBytes(t *testing.T) {
 	k := 10
 	sketch := sliding.New(k, 10)
@@ -126,8 +145,9 @@ func TestSketchSlidingWindowDecay(t *testing.T) {
 	}
 
 	// Simulate time progression (advance window)
-	sketch.Tick() // t = 1
-	sketch.Tick() // t = 2
+	sketch.Ticks(0) // no-op
+	sketch.Tick()   // t = 1
+	sketch.Tick()   // t = 2
 
 	// Add more counts for Y and Z at t = 2
 	sketch.Add("Y", 2)
@@ -349,6 +369,7 @@ func TestSketchErrorBounds(t *testing.T) {
 		{"high_freq", []uint32{500, 500, 500, 0, 0, 0}, []uint32{500, 1000, 1500, 1000, 500, 0}},
 		{"medium_freq", []uint32{100, 200, 300, 0, 0, 0}, []uint32{100, 300, 600, 500, 300, 0}},
 		{"low_freq", []uint32{50, 50, 100, 0, 0, 0}, []uint32{50, 100, 200, 150, 100, 0}},
+		{"lowest_freq", []uint32{50, 0, 0, 0, 0, 0}, []uint32{50, 50, 50, 0, 0, 0}},
 	}
 
 	// 6 time steps
@@ -371,8 +392,53 @@ func TestSketchErrorBounds(t *testing.T) {
 
 			// TODO: figure out an approximation for the lower bound as well
 			if actualCount > tc.total[tick] {
-				t.Errorf("tick %d: Count for %s should be less than or equal to the precise count (only under-estimation errors should occur). Expected <=%v, actual: %v", tick, tc.item, tc.increment[tick], actualCount)
+				t.Errorf("tick %d: Count for %s should be less than or equal to the precise count (only under-estimation errors should occur). Expected <=%v, actual: %v", tick, tc.item, tc.total[tick], actualCount)
 			}
+		}
+	}
+}
+
+func TestSketchCollisions(t *testing.T) {
+	K := 3
+	decay := 0.9
+	for _, width := range []int{4} {
+		for _, depth := range []int{1} {
+			t.Run(fmt.Sprintf("K=%d_Depth=%d_Width=%d", K, depth, width), func(t *testing.T) {
+				noiseItems := 10
+				noiseItemsFrequency := 1000
+				sketch := sliding.New(K, 1, sliding.WithWidth(width), sliding.WithDepth(depth), sliding.WithDecay(float32(decay)))
+
+				testCases := []struct {
+					item  string
+					count uint32
+				}{
+					{"a", 50},
+					{"b", 40},
+					{"c", 30},
+				}
+
+				totalItems := noiseItems * noiseItemsFrequency
+				for _, tc := range testCases {
+					totalItems += int(tc.count)
+				}
+
+				// Insert test items
+				for _, tc := range testCases {
+					sketch.Add(tc.item, tc.count)
+				}
+
+				// Insert noise items, decaying the test items' counters on collisions.'
+				for i := 0; i < noiseItems; i++ {
+					noiseItem := fmt.Sprintf("n%d", i)
+					sketch.Add(noiseItem, uint32(noiseItemsFrequency))
+				}
+
+				for _, tc := range testCases {
+					if sketch.Query(tc.item) {
+						t.Errorf("item %s should not be in the top-k, %#v", tc.item, sketch.SortedSlice())
+					}
+				}
+			})
 		}
 	}
 }

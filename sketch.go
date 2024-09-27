@@ -157,14 +157,13 @@ func (me *Sketch) Add(item string, increment uint32) bool {
 					if count == 0 {
 						b.Fingerprint = fingerprint
 						count = incrementRemaining
-						b.Count = count
 						maxCount = max(maxCount, count)
 						break
 					}
 				}
 			}
+			b.Count = count
 		}
-
 	}
 
 	return me.Heap.Update(item, fingerprint, maxCount)

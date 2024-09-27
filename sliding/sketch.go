@@ -203,11 +203,15 @@ func (me *Sketch) Add(item string, increment uint32) bool {
 			clear(b.Counts)
 			b.Counts[b.First] = increment
 			count = increment
+			b.CountsSum = count
+			maxSum = max(maxSum, count)
 
 		// this flow's bucket (equal fingerprint)
 		case b.Fingerprint == fingerprint:
 			b.Counts[b.First] += increment
 			count += increment
+			b.CountsSum = count
+			maxSum = max(maxSum, count)
 
 		// another flow's bucket (nonequal fingerprint)
 		default:
@@ -230,14 +234,13 @@ func (me *Sketch) Add(item string, increment uint32) bool {
 						b.Fingerprint = fingerprint
 						count = incrementRemaining
 						b.Counts[0] = incrementRemaining
+						maxSum = max(maxSum, count)
 						break
 					}
 				}
 			}
+			b.CountsSum = count
 		}
-
-		b.CountsSum = count
-		maxSum = max(maxSum, count)
 	}
 
 	return me.Heap.Update(item, fingerprint, maxSum)
