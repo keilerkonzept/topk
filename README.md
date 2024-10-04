@@ -120,6 +120,29 @@ func main() {
 }
 ```
 
+### Word Count
+
+An example word count program is available [here](cmd/word_count/main.go)
+
+To build it:
+```
+go build -o cmd/word_count/word_count cmd/word_count/main.go
+```
+
+To run it:
+```
+./word_count -k 10 -d 2 -w 8192 -p 0.95 -f war_and_peace.txt
+the : 31704
+and : 20564
+to : 16320
+of : 14855
+a : 10018
+in : 8228
+he : 7631
+his : 7630
+that : 7229
+was : 7189
+```
 ## Benchmarks
 
 ### Top-K Sketch
@@ -255,3 +278,16 @@ cpu: Apple M1 Pro
 | 100000 | 11    | 1151292 | 0.6   | 89.385µ ± 0%              | 1.674µ ±  1%          | **-98.13%** (p=0.000 n=10) |
 | 100000 | 11    | 1151292 | 0.8   | 89.349µ ± 1%              | 1.708µ ±  1%          | **-98.09%** (p=0.000 n=10) |
 | 100000 | 11    | 1151292 | 0.9   | 89.284µ ± 1%              | 1.705µ ±  1%          | **-98.09%** (p=0.000 n=10) |
+
+
+# Other Implementations
+
+| Name                    | Language | Github Repo                                                               |
+|-------------------------|----------|---------------------------------------------------------------------------|
+| SegmentIO               | go       | https://github.com/segmentio/topk                                         |
+| Aegis                   | go       | https://github.com/go-kratos/aegis/blob/main/topk/heavykeeper.go          |
+| Tomasz Kolaj            | go       | https://github.com/migotom/heavykeeper                                    | 
+| HeavyKeeper Paper       | C++      | https://github.com/papergitkeeper/heavy-keeper-project                    |
+| Jigsaw-Sketch           | C++      | https://github.com/duyang92/jigsaw-sketch-paper/tree/main/CPU/HeavyKeeper |
+| Redis Bloom Heavykeeper | C        | https://github.com/RedisBloom/RedisBloom/blob/master/src/topk.c           |
+| heavykeeper-rs          | Rust     | https://github.com/pmcgleenon/heavykeeper-rs                            	 |
